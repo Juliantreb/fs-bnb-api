@@ -245,3 +245,131 @@ app.listen(5000, () => {
     console.log("Server is running");
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////STUFF FROM DAY EIGHT/////////////
+
+
+
+
+
+
+const User = require("./src/models/user");
+
+
+
+
+
+///////// USERS//////
+app.post("/api/users", (req, res) => {
+    const newUser = req.body;
+    User.createUser(newUser, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+
+app.patch("/api/users", (req, res) => {
+    const newUser = req.body;
+    User.createUser(newUser, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+exports.User_delete = function (req, res) {
+    User.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
+    })
+};
+
+//////////PROPERTIES///////
+
+app.post("/api/properties", (req, res) => {
+    const newProperty = req.body;
+    Property.createProperty(newProperty, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+
+app.patch("/api/properties", (req, res) => {
+    const newProperty = req.body;
+    Property.createProperty(newProperty, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+exports.User_delete = function (req, res) {
+    Property.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
+    })
+};
+
+////////PROVIDER/////////
+
+app.post("/api/providers", (req, res) => {
+    const newProvider = req.body;
+    Provider.createProvider(newProvider, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+
+app.patch("/api/providers", (req, res) => {
+    const newProvider = req.body;
+    Provider.createProvider(newProvider, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+exports.User_delete = function (req, res) {
+    Provider.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
+    })
+};
+
+//////////BOOKING//////////
+
+app.post("/api/bookings", (req, res) => {
+    const newBooking = req.body;
+    Booking.createBooking(newBooking, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+
+app.patch("/api/bookings", (req, res) => {
+    const newBooking = req.body;
+    Booking.createBooking(newBooking, (err, result) => {
+        console.log(err);
+        console.log(result);
+        return res.status(200).json({id: result});
+    });
+});
+exports.User_delete = function (req, res) {
+    Booking.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
+    })
+};
+
