@@ -122,19 +122,28 @@ app.post("/properties/:id/bookings", (req, res) => {
 
 
 app.get("/properties/:id/bookings", (req, res) => {
-    const id = req.params.id;
-    var BookingRequests = new Array();
+    const propertyId = req.params.id;
+
+    const numberPropertyId = parseInt(propertyId); 
+    if(isNaN(numberPropertyId)) {
+        return res.stats(400).json({message: "Integer Exxpected"});
+    }
     if (!propertyId) {
         return res.status(400).json({ message: "Please pass in a property ID" })
-
     }
+    var validBookings = new Array();
+
     for (var k = 0; k < bookings.length; k++) {
-        if (bookings[k] == id) {
-            BookingRequests.push(bookings[k]);
+        const aBooking = bookings[k];
+        if (aBooking.propertyId == propertyId) {
+            validBookings.push(aBooking);
         }
     }
-    res.json(BookingRequests);
-})
+    if (validBookings.length < 1) {
+        return res.status(200).json({message: "No Bookings found for this property ID"})
+    }
+    res.json(validBookings);
+});
 
 app.post("/users/authentication", (req, res) => {
     const user = req.body;
