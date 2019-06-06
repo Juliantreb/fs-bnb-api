@@ -53,7 +53,7 @@ Property.createUser = function(newProperty, result) {
 
   Property.updatePropertyById = function(propertyId, property, result) {
     mysqlConn.query(
-      "UPDATE user SET user = ? WHERE id = ?",
+      "UPDATE property SET property = ? WHERE id = ?",
       [property, propertyId],
       function(err, res) {
         if (err) {

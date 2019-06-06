@@ -52,7 +52,7 @@ Provider.createProvider = function(newProvider, result) {
 
   Provider.updateProviderById = function(providerId, provider, result) {
     mysqlConn.query(
-      "UPDATE user SET user = ? WHERE id = ?",
+      "UPDATE provider SET provider = ? WHERE id = ?",
       [provider, providerId],
       function(err, res) {
         if (err) {

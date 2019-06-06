@@ -53,7 +53,7 @@ Booking.createUser = function(newBooking, result) {
 
   Booking.updateBookingById = function(bookingId, booking, result) {
     mysqlConn.query(
-      "UPDATE user SET user = ? WHERE id = ?",
+      "UPDATE booking SET booking = ? WHERE id = ?",
       [booking, bookingId],
       function(err, res) {
         if (err) {

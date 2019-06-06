@@ -1,26 +1,35 @@
 const express = require("express");
-
+const cors = require('cors');
+const mysql = require('mysql');
 const fs = require("fs");
 
 const app = express();
 
-//Playing around
-// const constants = require("./constants");
-// console.log(constants);
-
-// const ValidationService =require("./validation-service");
-// const valServ= new ValidationService();
-// const valServ2= new ValidationService
-// console.log(valServ);
-// console.log(ValidationService);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var users = new Array();
-var properties = new Array();
-var bookings = new Array();
+const config = {
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "qwerty1234",
+    database: "fs_bnb"
 
+};
+const connection = mysql.createConnection(config);
+connection.connect();
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+
+
+
+
+
+//////////////////////////////////////////////////////
 // app.post("/read/file", (req, res) => {
 //     fs.readFile("./data/file.json", function (err, data) {
 //         if (err) {
@@ -41,335 +50,24 @@ var bookings = new Array();
 //     });
 // });
 
-app.post("/properties", (req, res) => {
-    const property = req.body;
-    const bodyName = property.name;
-    const bodyLocation = property.location;
-    const bodyImageUrl = property.imageurl;
-    const bodyPrice = property.price;
-
-    var newProperty = {
-        id: properties.length + 1,
-        name: bodyName,
-        location: bodyLocation,
-        imageurl: bodyImageUrl,
-        price: bodyPrice
-    };
-
-    properties.push(newProperty);
-    res.json(newProperty);
-
-
-
-});
-
-app.get("/properties/:id", (req, res) => {
-    const propertyId = req.params.id;
-
-    const numberPropertyId = parseInt(propertyId);
-    if (isNaN(numberPropertyId)) {
-        return res.status(400).json({ message: "Integer Expected" });
-    }
-    if (!propertyId) {
-        return res.status(400).json({ message: "Please pass in a property ID" })
-    }
-
-    for (var k = 0; k < properties.length; k++) {
-        const aProperty = properties[k];
-        if (aProperty.id == propertyId) {
-            return res.status(200).json(aProperty)
-        }
-    }
-
-
-    return res.status(404).json({ message: "Property not found" });
-})
-
-// Delete property with :id from array.
-
-// Send message back to user that property was deleted.
-
-app.delete("/properties/:id", (req, res) => {
-    var id = req.params.id;
-    const index = properties
-        .filter(property => property.id == id)
-        .map(property => properties => properties.indexOf(property));
-    properties.splice(index, 1);
-    res.send("DELETE request to properties/:id");
-});
-
-app.post("/properties/:id/bookings", (req, res) => {
-    const propertyId = req.params.id;
-    const numberPropertyId = parseInt(propertyId);
-    const bookingRequest = req.body;
-    if (isNaN(numberPropertyId)) {
-        return res.status(400).json({ message: "Integer Expected" });
-    }
-    if (!propertyId) {
-        return res.status(400).json({ message: "Please pass in a property ID" })
-    }
-    const newBookingRequest = {
-        id: bookings.length + 1,
-        dateFrom: bookingRequest.dateFrom,
-        dateTo: bookingRequest.dateTo,
-        userId: bookingRequest.userId,
-        propertyId: propertyId,
-        status: "NEW",
-    };
-    bookings.push(newBookingRequest);
-    res.json(newBookingRequest);
-});
-
-
-app.get("/properties/:id/bookings", (req, res) => {
-    const propertyId = req.params.id;
-
-    const numberPropertyId = parseInt(propertyId); 
-    if(isNaN(numberPropertyId)) {
-        return res.stats(400).json({message: "Integer Exxpected"});
-    }
-    if (!propertyId) {
-        return res.status(400).json({ message: "Please pass in a property ID" })
-    }
-    var validBookings = new Array();
-
-    for (var k = 0; k < bookings.length; k++) {
-        const aBooking = bookings[k];
-        if (aBooking.propertyId == propertyId) {
-            validBookings.push(aBooking);
-        }
-    }
-    if (validBookings.length < 1) {
-        return res.status(200).json({message: "No Bookings found for this property ID"})
-    }
-    res.json(validBookings);
-});
-
-app.post("/users/authentication", (req, res) => {
-    const user = req.body;
-    const bodyEmail = user.email;
-    const bodyPassword = user.password;
-
-    let foundUser = null;
-    users.forEach(
-        (aUser) => {
-            if (aUser.email === bodyEmail && aUser.password === bodyPassword) {
-                foundUser = aUser;
-            }
-        }
-    );
 
-    if (foundUser) {
-        return res.status(200).json(foundUser)
-    } else {
-        return res.status(400).json({ message: "Incorrect Email or Password" })
-    }
 
-});
 
-app.get("/api/users/:id/", (req, res) => {
-    const userId = req.params.id;
 
-    const numberUserId = parseInt(userId);
-    if (isNaN(numberUserId)) {
-        return res.status(400).json({ message: "Integer Expected" });
-    }
 
-    if (!userId) {
-        return res.status(400).json({ message: "Please pass in a user ID" })
-    }
 
-    for (var k = 0; k < users.length; k++) {
-        const aUser = users[k];
-        if (aUser.id == userId) {
-            return res.status(200).json(aUser)
-        }
-    }
 
 
-    return res.status(404).json({ message: "User not found" });
-});
 
-app.post("/api/users", (req, res) => {
-    const user = req.body;
-    const bodyFirstname = user.firstname;
-    const bodyLastname = user.lastname;
-    const bodyEmail = user.email;
-    const bodyPassword = user.password;
 
-    let foundUser = null;
-    users.forEach(
-        (aUser) => {
-            if (aUser.email === bodyEmail) {
-                foundUser = aUser;
-            }
-        }
-    );
 
-    var errors = [];
-    if (!bodyFirstname) {
-        errors.push({ message: "Invalid firstname" });
-    }
-    if (foundUser != null) {
-        return res.status(400).json({ message: "User already exists with that email" });
-    }
-    if (errors.length > 0) {
-        return res.status(400).json({ message: "errors" })
-    }
+////////////////////////////////////////
 
-    if (!bodyEmail) {
-        errors.push({ message: "Invalid firstname" });
-        return res.status(400).json({ message: "Invalid request" });
-    }
 
-    var newUser = {
-        id: users.length + 1,
-        firstname: bodyFirstname,
-        lastname: bodyLastname,
-        email: bodyEmail,
-        password: bodyPassword
-    };
+// ////////PROVIDER/////////
 
-    users.push(newUser);
-    res.json(newUser);
-});
 
-// const PropertyRouter = express.Router();
-// PropertyRouter.post("/api/properties", (req, res) => {
-//     res.send("POST Properties api");
-// });
-// app.use("/parent", PropertyRouter);
 
+// //////////BOOKING//////////
 
-app.listen(5000, () => {
-    console.log("Server is running");
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-////////////////////////////STUFF FROM DAY EIGHT/////////////
-
-
-
-
-
-
-const User = require("./src/models/user");
-
-
-
-
-
-///////// USERS//////
-app.post("/api/users", (req, res) => {
-    const newUser = req.body;
-    User.createUser(newUser, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-
-app.patch("/api/users", (req, res) => {
-    const newUser = req.body;
-    User.createUser(newUser, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-exports.User_delete = function (req, res) {
-    User.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
-        res.send('Deleted successfully!');
-    })
-};
-
-//////////PROPERTIES///////
-
-app.post("/api/properties", (req, res) => {
-    const newProperty = req.body;
-    Property.createProperty(newProperty, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-
-app.patch("/api/properties", (req, res) => {
-    const newProperty = req.body;
-    Property.createProperty(newProperty, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-exports.User_delete = function (req, res) {
-    Property.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
-        res.send('Deleted successfully!');
-    })
-};
-
-////////PROVIDER/////////
-
-app.post("/api/providers", (req, res) => {
-    const newProvider = req.body;
-    Provider.createProvider(newProvider, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-
-app.patch("/api/providers", (req, res) => {
-    const newProvider = req.body;
-    Provider.createProvider(newProvider, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-exports.User_delete = function (req, res) {
-    Provider.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
-        res.send('Deleted successfully!');
-    })
-};
-
-//////////BOOKING//////////
-
-app.post("/api/bookings", (req, res) => {
-    const newBooking = req.body;
-    Booking.createBooking(newBooking, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-
-app.patch("/api/bookings", (req, res) => {
-    const newBooking = req.body;
-    Booking.createBooking(newBooking, (err, result) => {
-        console.log(err);
-        console.log(result);
-        return res.status(200).json({id: result});
-    });
-});
-exports.User_delete = function (req, res) {
-    Booking.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
-        res.send('Deleted successfully!');
-    })
-};
 

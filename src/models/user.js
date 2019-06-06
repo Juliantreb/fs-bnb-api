@@ -1,19 +1,19 @@
 var mysqlConn = require("../database/database");
 
-var Provider= function(provider) {
-  this.Firstname = provider.Firstname;
-  this.Lastname = provider.Lastname;
-  this.email = provider.email;
-  this.role = provider.role;
-  this.password = provider.password;
-  this.Id = provider.Id;
+var User= function(user) {
+  this.Firstname = user.Firstname;
+  this.Lastname = user.Lastname;
+  this.email = user.email;
+  this.role = user.role;
+  this.password = user.password;
+  this.Id = user.Id;
 
 };
 
 
 
-Provider.createProvider = function(newProvider, result) {
-    mysqlConn.query("INSERT INTO property set ?", newProvider, function(err, res) {
+User.createProvider = function(newUser, result) {
+    mysqlConn.query("INSERT INTO property set ?", newUser, function(err, res) {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -24,8 +24,8 @@ Provider.createProvider = function(newProvider, result) {
     });
   };
 
-  Provider.getAllProvider = function(result) {
-    mysqlConn.query("Select * from provider", function(err, res) {
+  User.getAllUser = function(result) {
+    mysqlConn.query("Select * from user", function(err, res) {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -36,8 +36,8 @@ Provider.createProvider = function(newProvider, result) {
     });
   };
 
-  Provider.getProviderById = function(providerId, result) {
-    mysqlConn.query("Select * from property where id = ? ", providerId, function(
+  User.getUserById = function(userId, result) {
+    mysqlConn.query("Select * from property where id = ? ", userId, function(
       err,
       res
     ) {
@@ -50,10 +50,10 @@ Provider.createProvider = function(newProvider, result) {
     });
   };
 
-  Provider.updateProviderById = function(providerId, provider, result) {
+  User.updateUserById = function(userId, user, result) {
     mysqlConn.query(
       "UPDATE user SET user = ? WHERE id = ?",
-      [provider, providerId],
+      [user, userId],
       function(err, res) {
         if (err) {
           console.log("error: ", err);
@@ -68,4 +68,4 @@ Provider.createProvider = function(newProvider, result) {
 
 
 
-module.exports = Provider;
+module.exports = User;
