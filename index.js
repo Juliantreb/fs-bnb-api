@@ -1,13 +1,9 @@
 const express = require("express");
 const cors = require('cors');
 const mysql = require('mysql');
-const fs = require("fs");
+// const fs = require("fs");
 
-const app = express();
-
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const UserRoutes = require("./src/routes/user.routes");
 
 const config = {
     host: "localhost",
@@ -17,15 +13,20 @@ const config = {
     database: "fs_bnb"
 
 };
+
 const connection = mysql.createConnection(config);
 connection.connect();
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use(UserRoutes);
 
 
+app.listen(3000, () => console.log("Running server on 3000"));
 
 
 
@@ -60,14 +61,5 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
-
-////////////////////////////////////////
-
-
-// ////////PROVIDER/////////
-
-
-
-// //////////BOOKING//////////
 
 
