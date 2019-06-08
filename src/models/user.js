@@ -1,18 +1,21 @@
 var mysqlConn = require("../database/database");
 
 var User= function(user) {
-  this.Firstname = user.Firstname;
-  this.Lastname = user.Lastname;
+  this.name = user.name;
+  this.profilephoto = user.profilephoto;
   this.email = user.email;
-  this.role = user.role;
+  this.facebook = user.facebook;
   this.password = user.password;
   this.Id = user.Id;
+  this.phonenumber = user.phonenumber;
+  this.livesin = user.livesin;
+  this.today = user.today;
 
 };
 
 
 
-User.createProvider = function(newUser, result) {
+User.createUser = function(newUser, result) {
     mysqlConn.query("INSERT INTO property set ?", newUser, function(err, res) {
       if (err) {
         console.log("error: ", err);
