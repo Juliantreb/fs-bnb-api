@@ -4,6 +4,7 @@ const mysql = require('mysql');
 // const fs = require("fs");
 
 const UserRoutes = require("./src/routes/user.routes");
+const ProviderRoutes = require("./src/routes/provider.routes")
 
 const config = {
     host: "localhost",
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(UserRoutes);
+app.use(ProviderRoutes);
 
 
 app.listen(3000, () => console.log("Running server on 3000"));

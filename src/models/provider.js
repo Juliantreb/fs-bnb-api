@@ -1,19 +1,22 @@
 var mysqlConn = require("../database/database");
 
 var Provider= function(provider) {
-  this.Firstname = provider.Firstname;
-  this.Lastname = provider.Lastname;
+  this.name = provider.name;
+  this.profilephoto = provider.profilephoto;
   this.email = provider.email;
-  this.role = provider.role;
+  this.facebook = provider.facebook;
   this.password = provider.password;
   this.Id = provider.Id;
+  this.phonenumber = provider.phonenumber;
+  this.livesin = provider.livesin;
+  this.today = provider.today;
 
 };
 
 
 
 Provider.createProvider = function(newProvider, result) {
-    mysqlConn.query("INSERT INTO property set ?", newProvider, function(err, res) {
+    mysqlConn.query("INSERT INTO provider set ?", newProvider, function(err, res) {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -30,7 +33,7 @@ Provider.createProvider = function(newProvider, result) {
         console.log("error: ", err);
         result(err, null);
       } else {
-        console.log("Users : ", res);
+        console.log("Providers : ", res);
         result(null, res);
       }
     });
