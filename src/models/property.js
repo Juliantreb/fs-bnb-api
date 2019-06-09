@@ -4,7 +4,7 @@ var Property = function(property) {
   this.name = property.name;
   this.imageurl = property.imageurl;
   this.location = property.location;
-  this.pricepernight = property.pricePernight;
+  this.pricepernight = property.pricePerNight;
   this.providerId = property.providerId;
   this.Id = property.Id;
   this.description = property.description;
@@ -13,7 +13,7 @@ var Property = function(property) {
 
 
 
-Property.createUser = function(newProperty, result) {
+Property.createProperty = function(newProperty, result) {
     mysqlConn.query("INSERT INTO property set ?", newProperty, function(err, res) {
       if (err) {
         console.log("error: ", err);
