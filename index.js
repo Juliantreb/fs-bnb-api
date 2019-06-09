@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const UserRoutes = require("./src/routes/user.routes");
 const ProviderRoutes = require("./src/routes/provider.routes");
 const PropertyRoutes = require("./src/routes/property.routes");
+const BookingRoutes = require("./src/routes/booking.routes")
 
 const config = {
     host: "localhost",
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(UserRoutes);
 app.use(ProviderRoutes);
 app.use(PropertyRoutes);
+app.use(BookingRoutes);
 
 
 app.listen(3000, () => console.log("Running server on 3000"));
