@@ -28,85 +28,85 @@ PropertyRoutes.post("/api/properties", (req, res) => {
             imageURL: property.imageURL,
             location: property.location,
             pricePerNight: property.pricePerNight,
-        
-            
+
+
         }
 
         return res.status(200).json(responseProperty);
     });
 });
 
-    PropertyRoutes.get("/api/properties", (req, res) => {
-    
-    
-        connection.query("SELECT * FROM property", (err, result) => {
-            if (err) {
-                console.log(err);  ///might need to delete <-///
-    
-                if (err.code === 'ER_DUP_ENTRY') {
-                    return res.status(400).json({ message: err.sqlMessage });
-                } else {
-                    return res.status(500).json({ message: "Failed to insert" });
-                }
-            }
-    
-            // console.log(result);
-    
-           
-            // res.setHeader('Access-Control-Allow-Origin', '*');
-            return res.status(200).json(result);
-        });
+PropertyRoutes.get("/api/properties", (req, res) => {
 
+
+    connection.query("SELECT * FROM property", (err, result) => {
+        if (err) {
+            console.log(err);  ///might need to delete <-///
+
+            if (err.code === 'ER_DUP_ENTRY') {
+                return res.status(400).json({ message: err.sqlMessage });
+            } else {
+                return res.status(500).json({ message: "Failed to insert" });
+            }
+        }
+
+        // console.log(result);
+
+
+        // res.setHeader('Access-Control-Allow-Origin', '*');
+        return res.status(200).json(result);
     });
+
+});
 
 
 // });
-    // var newProperty = {
-    //     id: properties.length + 1,
-    //     name: bodyName,
-    //     location: bodyLocation,
-    //     imageurl: bodyImageUrl,
-    //     pricePerNight: bodyPricePerNight,
-    //     description = bodyDescription,
-    //     address = bodyAddress,
-    // };
+// var newProperty = {
+//     id: properties.length + 1,
+//     name: bodyName,
+//     location: bodyLocation,
+//     imageurl: bodyImageUrl,
+//     pricePerNight: bodyPricePerNight,
+//     description = bodyDescription,
+//     address = bodyAddress,
+// };
 
-    // properties.push(newProperty);
-    // res.json(newProperty);
+// properties.push(newProperty);
+// res.json(newProperty);
 
-    // ProviderRoutes.post("/api/providers", (req, res) => {
-    //     const provider = req.body;
-    
-    
-    //     connection.query("INSERT INTO provider SET ?", provider, (err, result) => {
-    //         if (err) {
-    //             console.log(err);  ///might need to delete <-///
-    
-    //             if (err.code === 'ER_DUP_ENTRY') {
-    //                 return res.status(400).json({ message: err.sqlMessage });
-    //             } else {
-    //                 return res.status(500).json({ message: "Failed to insert" });
-    //             }
-    //         }
-    
-    //         console.log(result);
-    
-    //         var responseProvider = {
-    //             id: result.insertId,
-    //             name: provider.name,
-    //             email: provider.email,
-    //             password: provider.password,
-    //             livesin: provider.livesin,
-    //             phonenumber: provider.phonenumber,
-    //             facebook: provider.facebook,
-    //             today: provider.today,
-    //             profilephoto: provider.profilephoto,
-    //         }
-    
-    //         return res.status(200).json(responseProvider);
-    //     });
-    // });
-    
+// ProviderRoutes.post("/api/providers", (req, res) => {
+//     const provider = req.body;
+
+
+//     connection.query("INSERT INTO provider SET ?", provider, (err, result) => {
+//         if (err) {
+//             console.log(err);  ///might need to delete <-///
+
+//             if (err.code === 'ER_DUP_ENTRY') {
+//                 return res.status(400).json({ message: err.sqlMessage });
+//             } else {
+//                 return res.status(500).json({ message: "Failed to insert" });
+//             }
+//         }
+
+//         console.log(result);
+
+//         var responseProvider = {
+//             id: result.insertId,
+//             name: provider.name,
+//             email: provider.email,
+//             password: provider.password,
+//             livesin: provider.livesin,
+//             phonenumber: provider.phonenumber,
+//             facebook: provider.facebook,
+//             today: provider.today,
+//             profilephoto: provider.profilephoto,
+//         }
+
+//         return res.status(200).json(responseProvider);
+//     });
+// });
+
 
 
 // });
@@ -155,52 +155,53 @@ PropertyRoutes.get("/api/properties/:id", (req, res) => {
 //     res.send("DELETE request to properties/:id");
 // });
 
-// PropertyRoutes.post("/properties/:id/bookings", (req, res) => {
-//     const propertyId = req.params.id;
-//     const numberPropertyId = parseInt(propertyId);
-//     const bookingRequest = req.body;
-//     if (isNaN(numberPropertyId)) {
-//         return res.status(400).json({ message: "Integer Expected" });
-//     }
-//     if (!propertyId) {
-//         return res.status(400).json({ message: "Please pass in a property ID" })
-//     }
-//     const newBookingRequest = {
-//         id: bookings.length + 1,
-//         dateFrom: bookingRequest.dateFrom,
-//         dateTo: bookingRequest.dateTo,
-//         userId: bookingRequest.userId,
-//         propertyId: propertyId,
-//         status: "NEW",
-//     };
-//     bookings.push(newBookingRequest);
-//     res.json(newBookingRequest);
-// });
+PropertyRoutes.post("/api/properties/:id/bookings", (req, res) => {
+    const propertyId = req.params.id;
+    const numberPropertyId = parseInt(propertyId);
+    const bookingRequest = req.body;
+    if (isNaN(numberPropertyId)) {
+        return res.status(400).json({ message: "Integer Expected" });
+    }
+    if (!propertyId) {
+        return res.status(400).json({ message: "Please pass in a property ID" })
+    }
+    const newBookingRequest = {
+        id: bookings.length + 1,
+        dateFrom: bookingRequest.dateFrom,
+        dateTo: bookingRequest.dateTo,
+        userId: bookingRequest.userId,
+        propertyId: bookingRequest.propertyId,
+        propertyName: bookingRequest.propertyName,
+        status: "NEW",
+    };
+    bookings.push(newBookingRequest);
+    res.json(newBookingRequest);
+});
 
 
-// PropertyRoutes.get("/properties/:id/bookings", (req, res) => {
-//     const propertyId = req.params.id;
+PropertyRoutes.get("/properties/:id/bookings", (req, res) => {
+    const propertyId = req.params.id;
 
-//     const numberPropertyId = parseInt(propertyId);
-//     if (isNaN(numberPropertyId)) {
-//         return res.stats(400).json({ message: "Integer Exxpected" });
-//     }
-//     if (!propertyId) {
-//         return res.status(400).json({ message: "Please pass in a property ID" })
-//     }
-//     var validBookings = new Array();
+    const numberPropertyId = parseInt(propertyId);
+    if (isNaN(numberPropertyId)) {
+        return res.stats(400).json({ message: "Integer Exxpected" });
+    }
+    if (!propertyId) {
+        return res.status(400).json({ message: "Please pass in a property ID" })
+    }
+    var validBookings = new Array();
 
-//     for (var k = 0; k < bookings.length; k++) {
-//         const aBooking = bookings[k];
-//         if (aBooking.propertyId == propertyId) {
-//             validBookings.push(aBooking);
-//         }
-//     }
-//     if (validBookings.length < 1) {
-//         return res.status(200).json({ message: "No Bookings found for this property ID" })
-//     }
-//     res.json(validBookings);
-// });
+    for (var k = 0; k < bookings.length; k++) {
+        const aBooking = bookings[k];
+        if (aBooking.propertyId == propertyId) {
+            validBookings.push(aBooking);
+        }
+    }
+    if (validBookings.length < 1) {
+        return res.status(200).json({ message: "No Bookings found for this property ID" })
+    }
+    res.json(validBookings);
+});
 
 
 

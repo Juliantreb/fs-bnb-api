@@ -34,28 +34,29 @@ BookingRoutes.post("/api/bookings", (req, res) => {
     });
 });
 
-    // BookingRoutes.get("/api/booking", (req, res) => {
+    BookingRoutes.get("/api/bookings", (req, res) => {
     
     
-    //     connection.query("SELECT * FROM booking", (err, result) => {
-    //         if (err) {
-    //             console.log(err);  ///might need to delete <-///
+        connection.query("SELECT * FROM booking", (err, result) => {
+            if (err) {
+                console.log(err);  ///might need to delete <-///
     
-    //             if (err.code === 'ER_DUP_ENTRY') {
-    //                 return res.status(400).json({ message: err.sqlMessage });
-    //             } else {
-    //                 return res.status(500).json({ message: "Failed to insert" });
-    //             }
-    //         }
+                if (err.code === 'ER_DUP_ENTRY') {
+                    return res.status(400).json({ message: err.sqlMessage });
+                } else {
+                    return res.status(500).json({ message: "Failed to insert" });
+                }
+            }
     
-    //         // console.log(result);
+            // console.log(result);
     
            
-    //         // res.setHeader('Access-Control-Allow-Origin', '*');
-    //         return res.status(200).json(result);
-    //     });
+            // res.setHeader('Access-Control-Allow-Origin', '*');
+            console.log(result);
+            return res.status(200).json(result);
+        });
 
-    // });
+    });
 
 // BookingRoutes.patch("/api/bookings", (req, res) => {
 //     const newBooking = req.body;
